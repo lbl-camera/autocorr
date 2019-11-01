@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def fftautocorr(signal):
+def camera_fftautocorr(signal):
     """Autocorrelation of a signal using FFT.
 
     Parameters

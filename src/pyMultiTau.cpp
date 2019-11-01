@@ -88,7 +88,32 @@ py::tuple fftautocorr(py::array_t<double, py::array::c_style | py::array::forcec
     return result;
 }
 
+py::array_t<float> time_time(py::array_t<float, py::array::c_style | py::array::forcecast> Signal) {
+    int nrow = 1, ntimes =0;
+    if (Signal.ndim() == 1)
+        ntimes = Signal.shape()[0];
+    else if (Signal.ndim() == 2) {
+        nrow = Signal.shape()[0];
+        ntimes = Signal.shape()[1];
+    }
+    else
+        throw std::runtime_error("Input signal must be a 1-D or a 2-D numpy array");
+
+    /* get pointer to encapsulated data */
+    float * signal = (float *) Signal.request().ptr;
+
+    /* create numpy array to hold the result */
+    std::vector<ssize_t> shape;
+    shape.push_back(ntimes);
+    shape.push_back(ntimes);
+    auto TCF = py::array_t<float>(shape);
+    float * tcf = (float *) TCF.request().ptr;
+    twotime_corr_func(signal, tcf, nrow, ntimes);
+    return TCF;
+}
+
 PYBIND11_MODULE (cAutocorr, m) {
-    m.def("multitau_mt", &multitau_mt, "Same algorithm as python, except uses multiple cores");
-    m.def("fftautocorr", &fftautocorr, "Compute autocorrelation using FFT");
+    m.def("camera_multitau_mt", &multitau_mt, "Same algorithm as python, except uses multiple cores");
+    m.def("camera_fftautocorr_mt", &fftautocorr, "Compute autocorrelation using FFT");
+    m.def("camera_twotime_mt", &time_time, "Compute two-time correlation function");
 }

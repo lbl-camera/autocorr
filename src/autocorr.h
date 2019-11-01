@@ -1,3 +1,4 @@
+#include <cstddef>
 
 #ifndef CXX_AUTOCORR__H
 #define CXX_AUTOCORR__H
@@ -35,6 +36,6 @@ class MultiTauAutocorrelator {
 
 
 void FFTAutocorr(double *& , double *&, int , int );
-
+void twotime_corr_func(float *&, float *&, int, int);
 
 #endif // CXX_AUTOCORR__H
