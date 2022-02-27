@@ -36,6 +36,7 @@ class MultiTauAutocorrelator {
 
 
 void FFTAutocorr(double *& , double *&, int , int );
-void twotime_corr_func(float *&, float *&, int, int);
+void cpu_time_time_brown(float *&, int, int, float *&);
+void cpu_time_time_sutton(float *&, int, int, float *&);
 
 #endif // CXX_AUTOCORR__H
